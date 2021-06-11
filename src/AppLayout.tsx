@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Layout, Menu } from "antd";
 import "./AppLayout.less";
-// import { Dashboard } from "./pages";
+import Dashboard from "./pages/dashboard/Dashboard";
+
 
 //Code is for the layout with three tabs.
 
 const { Header, Content } = Layout;
 
 function getPage(nav: string) {
-    // return <Dashboard />;
+     return <Dashboard />;
     return `test ${nav}`;
 }
 

@@ -17,16 +17,15 @@ import {
 } from "../../store/atoms";
 import SummaryWidget from "../SummaryWidget/SummaryWidget";
 import ChartWidget from "../ChartWidget/ChartWidget";
-// import cloneDeep from "lodash/cloneDeep";
-// import { v4 as uuidv4 } from "uuid";
-// import { postWidgetData } from "../../data-com/api";
+import { cloneDeep } from "lodash-es";
+import { isMock, postWidgetDef } from "../../data-com/api";
+import { v4 as uuidv4 } from "uuid";
 
 const handleButtonClick = (e: any) => {
   message.info("Click on left button.");
-  console.log("click left button", e);
 };
 
-export default function WidgetShell({widgetDef}: { widgetDef:WidgetDefinition}) {
+export default function WidgetShell({ widgetDef }: { widgetDef: WidgetDefinition }) {
   const [, setEditModalVisible] = useRecoilState(editModalVisibleState);
   const [, setDeleteModalVisible] = useRecoilState(deleteModalVisibleState);
   const [widgetDefs, setWidgetDefs] = useRecoilState(widgetDefsState);
@@ -35,24 +34,25 @@ export default function WidgetShell({widgetDef}: { widgetDef:WidgetDefinition}) 
   const handleMenuClick = (e: any) => {
     switch (e.key) {
       case "edit":
-        // setWidgetDef(cloneDeep(widgetDef));
+        setWidgetDef(cloneDeep(widgetDef));
         setEditModalVisible(true);
         break;
       case "delete":
-        // setWidgetDef(cloneDeep(widgetDef));
+        setWidgetDef(cloneDeep(widgetDef));
         setDeleteModalVisible(true);
         break;
       case "clone":
-        // let clonedWidgetDef = cloneDeep(widgetDef);
-        // clonedWidgetDef.id = uuidv4();
-        // setWidgetDefs([...widgetDefs, clonedWidgetDef]);
-        // postWidgetData(clonedWidgetDef).then((data) => {
-        //   console.log(data);
-        // });
+        let clonedWidgetDef = cloneDeep(widgetDef);
+        clonedWidgetDef.id = uuidv4();
+        setWidgetDefs([...widgetDefs, clonedWidgetDef]);
+        if (!isMock()) {
+          postWidgetDef(clonedWidgetDef).then((data) => {
+            // console.log(data);
+          });
+        }
         break;
-
       default:
-        console.log("default");
+        break;
     }
   };
 
@@ -67,13 +67,13 @@ export default function WidgetShell({widgetDef}: { widgetDef:WidgetDefinition}) 
       <Menu.Item key="clone" icon={<CopyOutlined />}>
         Clone
       </Menu.Item>
-      <Menu.Item key="snapshot" icon={<CameraOutlined />}>
+      <Menu.Item disabled={true} key="snapshot" icon={<CameraOutlined />}>
         Snapshot
       </Menu.Item>
     </Menu>
   );
 
-  function getWidget(type:any) {
+  function getWidget(type: any) {
     switch (type) {
       case "SUMMARY":
         return <SummaryWidget widgetDef={widgetDef}></SummaryWidget>;
@@ -93,18 +93,18 @@ export default function WidgetShell({widgetDef}: { widgetDef:WidgetDefinition}) 
           <h3>{widgetDef.title}</h3>
         </div>
         <div className="top-right">
-       <Dropdown.Button
+          <Dropdown.Button
             icon={<EllipsisOutlined />}
             size="small"
             type="primary"
             onClick={handleButtonClick}
             overlay={menu}
-          /> 
+          />
         </div>
         <div className="bottom-left"></div>
       </div>
-       {getWidget(widgetDef.type)}
-      TEST
+      {getWidget(widgetDef.type)}
     </div>
   );
 }
+

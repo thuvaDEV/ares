@@ -1,13 +1,16 @@
 import { WidgetDefinition } from "../store/atoms";
 
-// The Endpoint URL
-const serverUrl = "http://localhost:3000/";
+// The JSON SERVER Endpoint 
+const serverUrl = "http://localhost:3000/"; // TODO: change it to firebase api
 
+export enum DataType {
+  Mock = "MOCK",
+  API = "API"
+};
 
-  // export enum DataType {
-  //   mock: "MOCK",
-  //   api: "API"
-  // };
+export const env = DataType.Mock;
+
+export const isMock = () => { return env === DataType.Mock }
 
 const api = {
   widgets: "widgets",
@@ -16,19 +19,13 @@ const api = {
 
 const header = { "Content-Type": "application/json;charset=utf-8" };
 
-export const getWidgetsData = async () => {
+export const getWidgetsDefs = async () => {
   let response = await fetch(serverUrl + api.widgets);
   let data = await response.json();
   return data;
 };
 
-export const getData = async () => {
-  let response = await fetch(serverUrl + api.data);
-  let data = await response.json();
-  return data;
-};
-
-export const postWidgetData = async (widgetDef:WidgetDefinition) => {
+export const postWidgetDef = async (widgetDef: WidgetDefinition) => {
   // Request options
   let options = {
     method: "POST",
@@ -40,7 +37,7 @@ export const postWidgetData = async (widgetDef:WidgetDefinition) => {
   return data;
 };
 
-export const deleteWidgetData = async (widgetDef:WidgetDefinition) => {
+export const deleteWidgetDef = async (widgetDef: WidgetDefinition) => {
   // Request options
   let options = {
     method: "DELETE",
@@ -54,7 +51,7 @@ export const deleteWidgetData = async (widgetDef:WidgetDefinition) => {
   return data;
 };
 
-export const putWidgetData = async (widgetDef:WidgetDefinition) => {
+export const putWidgetDef = async (widgetDef: WidgetDefinition) => {
   // Request options
   let options = {
     method: "PUT",
@@ -65,6 +62,12 @@ export const putWidgetData = async (widgetDef:WidgetDefinition) => {
     serverUrl + api.widgets + "/" + widgetDef.id,
     options
   );
+  let data = await response.json();
+  return data;
+};
+
+export const getWidgetsData = async () => {
+  let response = await fetch(serverUrl + api.data);
   let data = await response.json();
   return data;
 };

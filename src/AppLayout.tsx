@@ -3,14 +3,10 @@ import { Layout, Menu } from "antd";
 import "./AppLayout.less";
 import Dashboard from "./pages/dashboard/Dashboard";
 
-
-//Code is for the layout with three tabs.
-
 const { Header, Content } = Layout;
 
 function getPage(nav: string) {
-     return <Dashboard />;
-    return `test ${nav}`;
+  return <Dashboard />;
 }
 
 function AppLayout() {

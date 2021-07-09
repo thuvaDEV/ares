@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { Modal, Typography } from "antd";
-import { putWidgetData } from "../../data-com/api";
+import { isMock, putWidgetDef } from "../../data-com/api";
 import {
   widgetDefsState,
   editModalVisibleState,
@@ -20,9 +20,12 @@ export default function EditWidgetModal() {
     const newList = replaceItemAtIndex(widgetDefs, index, widgetDef);
     setWidgetDefs(newList);
     setModalVisible(false);
-    putWidgetData(widgetDef).then((data) => {
-      console.log(data);
-    });
+
+    if(!isMock()) { 
+      putWidgetDef(widgetDef).then((data) => {
+        // console.log(data);
+      });
+    }
   };
 
   const handleCancel = (e:any) => {

@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Modal, Button } from "antd";
-import { deleteWidgetData } from "../../data-com/api";
+import { deleteWidgetDef, isMock } from "../../data-com/api";
 import {
   widgetDefsState,
   deleteModalVisibleState,
@@ -18,9 +18,12 @@ export default function DeleteWidgetModal() {
     const newList = widgetDefs.filter((e) => e.id !== widgetDef.id);
     setWidgetDefs(newList);
     setModalVisible(false);
-    deleteWidgetData(widgetDef).then((data: any) => {
-      console.log(data);
-    });
+
+    if (!isMock()) {
+      deleteWidgetDef(widgetDef).then((data: any) => {
+        // console.log(data);
+      });
+    }
   };
 
   const handleCancel = (e: any) => {

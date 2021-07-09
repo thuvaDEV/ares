@@ -45,7 +45,7 @@ export default function SummaryWidget({ widgetDef }: { widgetDef: WidgetDefiniti
         onChange={handleChange}>
         {options}
       </Select>
-      <div className="widget-content">
+      <div className="widget-info-content">
         {content}
       </div>
     </>

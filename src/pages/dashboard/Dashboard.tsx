@@ -95,6 +95,7 @@ function Dashboard() {
           className="layout-save-btn"
           type="primary"
           shape="circle"
+          title={isMock()? 'Save layout NOT available on mock': 'Save Layout'}
           disabled={isMock()}
           icon={<LayoutOutlined />}
           size={"large"}
